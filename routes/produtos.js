@@ -50,7 +50,7 @@ router.post('/', (req, res, next) => {
 
                 if (error) { return res.status(500).send({ error: error }) }
 
-                res.status(201).send({
+                res.status(200).send({
                     mensagem: 'Produto salvo no banco.',
                     id_produto: resultado.insertId
                 });
@@ -78,14 +78,15 @@ router.patch('/:id_produto', (req, res, next) => {
 
                 if (error) { return res.status(500).send({ error: error }) }
 
-                res.status(202).send({
+                res.status(200).send({
                     mensagem: 'Produto alterado com sucesso.'
                 });
-            });
+            }
+        );
     });
 });
 
-router.delete('/', (req, res, next) => {
+router.delete('/:id_produto', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
 
@@ -93,13 +94,13 @@ router.delete('/', (req, res, next) => {
 
         conn.query(`DELETE FROM produtos                        
                      WHERE id_produto = ?`,
-            [req.body.id_produto],
+            [req.params.id_produto],
             (error, resultado, field) => {
                 conn.release();
 
                 if (error) { return res.status(500).send({ error: error }) }
 
-                res.status(202).send({
+                res.status(200).send({
                     mensagem: 'Produto excluído com sucesso.'
                 });
             });
